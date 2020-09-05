@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="inputfields" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:colorActivatedHighlight">@color/white</item>
+        <item name="android:textColorHintInverse">@color/white</item>
+        <item name="android:outlineAmbientShadowColor">@color/white</item>
+        <item name="android:outlineSpotShadowColor">@color/white</item>
+    </style>
+
+    <style name="cardview." parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="android:outlineAmbientShadowColor">@color/grey</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+</resources>
