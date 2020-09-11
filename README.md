@@ -1,3 +1,2 @@
 # LeaderBoardApp
-leaderboard app for GADS2020
 OPEN SCREENSHOTS FOLDER TO VIEW THE APP PICTURES
