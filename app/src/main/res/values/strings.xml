@@ -9,4 +9,6 @@
     <string name="lastname">Lastname</string>
     <string name="email">Email</string>
     <string name="github_url">Github URL</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="submit">Submit</string>
 </resources>

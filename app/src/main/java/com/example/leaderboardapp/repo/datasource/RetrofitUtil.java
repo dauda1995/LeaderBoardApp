@@ -1,6 +1,7 @@
 package com.example.leaderboardapp.repo.datasource;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -22,6 +23,8 @@ public class RetrofitUtil {
     private final MutableLiveData<List<LeaderInfo>> learning = new MutableLiveData<>();
     private final MutableLiveData<List<SkillsIQInfo>> skillsIQ = new MutableLiveData<>();
     private final MutableLiveData<Boolean> submitResponse = new MutableLiveData<>();
+
+    private static final String TAG = "RetrofitUtil";
     private GetDataService mService;
 
 
@@ -29,7 +32,7 @@ public class RetrofitUtil {
     }
 
     public void fetchDataLearning() {
-       mService = RetrofitClientInstance.getRetrofitInstance(1).create(GetDataService.class);
+       mService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<List<LeaderInfo>> call = mService.getLearningLeaders();
         call.enqueue(new Callback<List<LeaderInfo>>() {
             @Override
@@ -47,7 +50,7 @@ public class RetrofitUtil {
     }
 
     public void fetchDataSkills(){
-        mService = RetrofitClientInstance.getRetrofitInstance(1).create(GetDataService.class);
+        mService = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<List<SkillsIQInfo>> call2 = mService.skillIQLeaders();
         call2.enqueue(new Callback<List<SkillsIQInfo>>() {
             @Override
@@ -63,17 +66,27 @@ public class RetrofitUtil {
     }
 
     public void submitDetails(RetroModel model){
-        submitResponse.setValue(false);
-        mService = RetrofitClientInstance.getRetrofitInstance(2).create(GetDataService.class);
-        Call<RetroModel> call = mService.submitPost(model);
-        call.enqueue(new Callback<RetroModel>() {
+       // submitResponse.setValue(false);
+        mService = RetrofitClientInstance.getRetSubmitInstance().create(GetDataService.class);
+        Call<Void> call = mService.submitPost(
+                model.email,
+                model.firstname,
+                model.secondname,
+                model.githublink
+                );
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<RetroModel> call, Response<RetroModel> response) {
-                submitResponse.setValue(true);
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()) {
+                    submitResponse.setValue(true);
+                    Log.d(TAG, "onResponse: the data has been fetched "  + response.code());
+                }else{
+                    Log.d(TAG, "onResponse: something went wrong " + response.code());
+                }
             }
 
             @Override
-            public void onFailure(Call<RetroModel> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 submitResponse.setValue(false);
             }
         });

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/submitback"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -52,11 +51,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/messageTextInputLayoutperiod"
-                style="@style/inputfields"
+                style="@style/editInput"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -74,7 +74,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/messageTextInputLayoutperiod2"
-                style="@style/inputfields"
+                style="@style/editInput"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -113,7 +113,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/messageTextInputLayout_interest"
-            style="@style/inputfields"
+            style="@style/editInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="25dp">
@@ -141,7 +141,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/border"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:textAllCaps="false" />
 
 

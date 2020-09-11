@@ -10,25 +10,37 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
 
     private static Retrofit retrofit;
+    private static Retrofit sRetrofit;
     private static final String BASE_URL_GET = "https://gadsapi.herokuapp.com";
     private static final String BASE_URL_POST = "https://docs.google.com/forms/d/e/";
 
-    public static Retrofit getRetrofitInstance(int ACTION) {
+
+
+    public static Retrofit getRetrofitInstance() {
 
         if (retrofit == null) {
-            if (ACTION == 1) {
+
                 retrofit = new Retrofit.Builder()
                         .baseUrl(BASE_URL_GET)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
-            }else{
-                retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL_POST)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-            }
+
         }
         return retrofit;
     }
+
+    public static Retrofit getRetSubmitInstance() {
+
+        if (sRetrofit == null) {
+
+                sRetrofit = new Retrofit.Builder()
+                        .baseUrl(BASE_URL_POST)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+        }
+        return sRetrofit;
+    }
+
+
 }

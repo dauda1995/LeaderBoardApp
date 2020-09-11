@@ -1,6 +1,7 @@
 package com.example.leaderboardapp.ui.main;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PageViewModel extends AndroidViewModel {
 
     private Repository mRepository;
+    private static final String TAG = "PageViewModel";
 
     public PageViewModel(@NonNull Application application) {
         super(application);
@@ -43,7 +45,10 @@ public class PageViewModel extends AndroidViewModel {
     public LiveData<List<SkillsIQInfo>> getSkillsTop20(){ return mRepository.getSkillsApi();}
 
     public LiveData<Boolean> getSubmitResponse(){
+        Log.d(TAG, "getSubmitResponse: getting response");
         return mRepository.getSubmitResponse();
+
+
     }
 
 

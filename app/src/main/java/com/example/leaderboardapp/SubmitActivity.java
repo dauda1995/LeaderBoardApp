@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -16,6 +17,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SubmitActivity extends AppCompatActivity {
 
+    private static final String TAG = "SubmitActivity";
     private EditText mFirst;
     private EditText mLast;
     private EditText mLink;
@@ -49,17 +51,17 @@ public class SubmitActivity extends AppCompatActivity {
         });
     }
 
-    public Boolean validate(){
-        if(mFirst.getText().equals(null)){
+    public Boolean validate(String firstname, String lastname, String email, String link){
+        if(firstname.isEmpty()){
             mFirst.setError("check");
             return false;
-        }else if(mLast.getText().equals(null)){
+        }else if(lastname.isEmpty()){
             mLast.setError("check");
             return false;
-        }else if(mEmail.getText().equals(null)){
+        }else if(email.isEmpty()){
             mEmail.setError("check");
             return false;
-        }else if(mLink.getText().equals(null)){
+        }else if(link.isEmpty()){
             mLink.setError("check");
             return false;
         }else{
@@ -72,7 +74,11 @@ public class SubmitActivity extends AppCompatActivity {
     }
 
     public void submit(){
-       if(!validate())
+        String firstname = mFirst.getText().toString();
+        String lastname = mLast.getText().toString();
+        String link = mLink.getText().toString();
+        String email = mEmail.getText().toString();
+       if(!validate(firstname, lastname, email, link))
            return;
         new SweetAlertDialog(SubmitActivity.this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Are you sure?")
@@ -80,41 +86,52 @@ public class SubmitActivity extends AppCompatActivity {
                 .setConfirmClickListener(sDialog ->
                 {
                     sDialog.dismissWithAnimation();
-                    confirmSubmit();
+                    confirmSubmit(firstname, lastname, email, link);
 
                 })
-                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
+                .setCancelButton("Cancel", sDialog -> sDialog.dismissWithAnimation())
                 .show();
     }
 
     private void goToMainActivity() {
-        new SweetAlertDialog(SubmitActivity.this)
+        new SweetAlertDialog(SubmitActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("Submission Successful")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                    }
+                })
                 .show();
-        finish();
+
     }
 
-    private void confirmSubmit() {
+    private void confirmSubmit(String firstname, String lastname, String email, String link) {
 
-        String firstname = mFirst.getText().toString();
-        String lastname = mLast.getText().toString();
-        String link = mLink.getText().toString();
-        String email = mEmail.getText().toString();
+
+
         RetroModel model = new RetroModel(firstname, lastname, email, link);
         pageViewModel.submitDetails(model);
-            if(!pageViewModel.getSubmitResponse().getValue()) {
+
+        pageViewModel.getSubmitResponse().observe(this, item ->{
+            if(!item) {
                 new SweetAlertDialog(SubmitActivity.this, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Submission Unsuccessful")
 
                         .show();
                 return;
             }
+            Log.d(TAG, "confirmSubmit: should appear after calculation");
             goToMainActivity();
+        });
+//            if(!pageViewModel.getSubmitResponse().getValue()) {
+//                new SweetAlertDialog(SubmitActivity.this, SweetAlertDialog.ERROR_TYPE)
+//                        .setTitleText("Submission Unsuccessful")
+//
+//                        .show();
+//                return;
+//            }
+//            goToMainActivity();
 
 
     }
